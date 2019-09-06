@@ -1,0 +1,4 @@
+#Weekly Documentation 1
+
+The first week was mainly spent mulling over what to choose as a subject and then creating a repository for the eventual software. I knew I wanted to do something that applied to games, but choosing an Unity project which is my forté would probably come back to haunt me due to complexity, feature creep and the relative difficulty of doing unit-testing on the engine. I settled on RPS because that basically requires only the simplest possible UI, which lets me focus on the meat of this course: algorithms and datastructures.
+Next week I intend to have the software itself ready: you can play against an AI and exit the game. The datastructures will be Java's own most likely, and the AI will be extremely stupid. I'll be surprised if I'm able to create anything except something that always plays Paper.
