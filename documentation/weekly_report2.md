@@ -1,0 +1,3 @@
+# Weekly Report 1
+
+The second week was nearly as unproductive as the first. I prioritized deadlines which if were missed would prevent other people from working, which left me only a couple of hours to work on this project. I managed to create a technically playable commandline UI Rock-paper-scissors game. The code coverage and commentation could be better, but I was truly in a rush. My biggest regret is that the spefication document is still an incomplete mess, as I still haven't begun researching what an AI that has over 50% winrate in RPS looks like.
