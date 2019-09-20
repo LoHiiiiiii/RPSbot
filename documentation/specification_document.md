@@ -6,24 +6,24 @@ For the AI, I will be mostly using the article by Daniel Lawrence as a base (htt
 
 #### Primary strategies
 Fixed move - Always pick the same thing\
-Frequency counting - Pick the move that would have won the most if used\
-Rotation - Constantly picking a move by rotating previous move by 0, 1 or 2 (0 means picking the same move, 1 means picking the move that would have beat the move and 2 means picking the move that would have lost to the move)\
-Anti-rotation - Assume the opponent is rotating, calculate by how much and then rotate their move by one more than they would\
-History string - Record all the moves made, then once you spot a pattern pick the next move in that pattern\
+Frequency counting - Pick the move that would have won the most if used.\
+Rotation - Constantly picking a move by rotating previous move by 0, 1 or 2 (0 means picking the same move, 1 means picking the move that would have beat the move and 2 means picking the move that would have lost to the move.)\
+Anti-rotation - Assume the opponent is rotating, calculate by how much and then rotate their move by one more than they would.\
+History string - Record all the moves made, then once you spot a pattern pick the next move in that pattern.
 
 #### Metastrategies
 P0a - Just play the strategy\
-P0b - Calculate what is the best move using your strategy from the opponent's position, then rotate that by one\
-P1a - Rotate P0a by two, thus beating P0b\
-P1b - Rotate P0b by two, thus beating P1a\
-P2a - Rotate P1a by two, thus beating P1b\
-P2b - Rotate P1b by two, thus beating P2b. Note that this loses to P0a\
+P0b - Calculate what is the best move using your strategy from the opponent's position, then rotate that by one.\
+P1a - Rotate P0a by two, thus beating P0b.\
+P1b - Rotate P0b by two, thus beating P1a.\
+P2a - Rotate P1a by two, thus beating P1b.\
+P2b - Rotate P1b by two, thus beating P2b. Note that this loses to P0a.
 
 #### Metastrategy selectors
-Naive scoring - Picking a succesful move nets you one point, picking a failing move costs you one. Pick the strategy with the best score\
-Decaying score - Same as naive, but after each round multiple the score by a number between 0 and 1, thus forgetting about previous moves gradually\
-Drop switch - Naive scoring, except losing even once sets you to 0 (or lower)\
-Random drop switch - Same as above, except the drop isn't certain\
+Naive scoring - Picking a succesful move nets you one point, picking a failing move costs you one. Pick the strategy with the best score.\
+Decaying score - Same as naive, but after each round multiple the score by a number between 0 and 1, thus forgetting about previous moves gradually.\
+Drop switch - Naive scoring, except losing even once sets you to 0 (or lower).\
+Random drop switch - Same as above, except the drop isn't certain.
 
 These can be modified by chasing the score outcome on a draw, or having special case for the loss or draw of the selected metastrategy. On top of this, we can add an additional layer by using selectors which select selectors instead of metastrategy!
 
