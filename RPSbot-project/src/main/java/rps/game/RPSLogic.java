@@ -33,18 +33,21 @@ public class RPSLogic {
      * @param playerTwoMove The move player one has chosen.
      */
     public void evaluateMoves(Move playerOneMove, Move playerTwoMove){
-        if (playerOneMove == Move.FORFEIT){
-            playerTwoScore = scoreToWin;
-        } else if (playerTwoMove == Move.FORFEIT){
-            playerOneScore = scoreToWin;
-        } else if (playerOneMove != playerTwoMove){
+        int change = getScoreChange(playerOneMove, playerTwoMove);
+        playerOneScore += Math.max(0, change);
+        playerTwoScore += Math.min(0, change);
+    }
+    
+    public int getScoreChange(Move playerOneMove, Move playerTwoMove){
+        if (playerOneMove != playerTwoMove){
             if ((playerOneMove == Move.ROCK && playerTwoMove == Move.SCISSORS) || 
                 (playerOneMove == Move.PAPER && playerTwoMove == Move.ROCK) || 
                 (playerOneMove == Move.SCISSORS && playerTwoMove == Move.PAPER))
-                playerOneScore++;
+                return 1;
             else
-                playerTwoScore++;
+                return -1;
         }
+        return 0;
     }
     
     public Boolean playerOneHasWon(){
@@ -65,5 +68,23 @@ public class RPSLogic {
     
     public int getPlayerTwoScore(){
         return playerTwoScore;
+    }
+    
+    public static Move rotateMove(Move move, int rotation){
+        rotation = rotation % 3;
+        switch(rotation){
+            case 2:switch(move){
+                    case ROCK: return Move.PAPER;
+                    case PAPER: return Move.SCISSORS;
+                    default: return Move.ROCK;
+                }
+            case 1:
+                switch(move){
+                    case ROCK: return Move.SCISSORS;
+                    case PAPER: return Move.ROCK;
+                    default: return Move.PAPER;
+                }
+            default: return move;
+        }
     }
 }

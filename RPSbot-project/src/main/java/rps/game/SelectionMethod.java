@@ -9,9 +9,6 @@ package rps.game;
  *
  * @author vertt
  */
-
-public enum Move{
-    ROCK,
-    PAPER,
-    SCISSORS
+public interface SelectionMethod {
+    int getScore(int currentScore, Move playerMove, Move opponentMove, Boolean chosenOne);
 }

@@ -28,4 +28,4 @@ Random drop switch - Same as above, except the drop isn't certain.
 These can be modified by chasing the score outcome on a draw, or having special case for the loss or draw of the selected metastrategy. On top of this, we can add an additional layer by using selectors which select selectors instead of metastrategy!
 
 #### Additional algorithms and data structures
-After perusing through the different strategies and selectors, I think the only data structure I need is a HashMap which is for keeping score. Sorting might be useful, but as the number of strategies per layer probably won't exceed tens, it is unnecessary.
+After perusing through the different strategies and selectors, I think the only data structure I need is a HashMap (and for this possibly a set) which is for keeping score. Sorting might be useful, but as the number of strategies per layer probably won't exceed tens, it is unnecessary. The main two methods of the hashmap, put and get, have the worst case and best scenario complexities of O(n) and O(1).

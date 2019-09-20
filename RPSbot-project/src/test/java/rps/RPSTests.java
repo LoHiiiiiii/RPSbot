@@ -77,8 +77,6 @@ public class RPSTests {
         assertEquals(Move.PAPER, hp.getMove());
         io.setString("S");
         assertEquals(Move.SCISSORS, hp.getMove());
-        io.setString("F");
-        assertEquals(Move.FORFEIT, hp.getMove());
         io.setString("X");
         assertEquals(Move.ROCK, hp.getMove());
         assertEquals(2, io.rounds);

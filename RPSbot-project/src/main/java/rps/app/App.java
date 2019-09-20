@@ -5,6 +5,7 @@ import rps.game.RPSLogic;
 import rps.game.HumanPlayer;
 import rps.game.SingleMovePlayer;
 import rps.game.Move;
+import java.util.HashMap;
 
 /**
  *
@@ -36,9 +37,6 @@ public class App {
         while(true){
             playerOneMove = playerOne.getMove();
             playerTwoMove = playerTwo.getMove();
-            if (playerOneMove == Move.FORFEIT || playerTwoMove == Move.FORFEIT){
-                break;
-            }
             io.print("Player one chose " + playerOneMove.name() + "! Player two chose " + playerTwoMove.name() + "!");
             logic.evaluateMoves(playerOneMove, playerTwoMove);
             playerOne.recordResult(playerOneMove, playerTwoMove);

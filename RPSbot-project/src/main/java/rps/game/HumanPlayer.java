@@ -34,7 +34,6 @@ public class HumanPlayer implements RPSPlayer {
             case 'R': case 'r': case 'K': case 'k': return Move.ROCK;
             case 'P': case 'p': return Move.PAPER;
             case 'S': case 's': return Move.SCISSORS;
-            case 'F': case 'f': return Move.FORFEIT;
             default: return getMove();
         }
     }
@@ -44,5 +43,9 @@ public class HumanPlayer implements RPSPlayer {
         //Doesn't record anything since humans have to strategize themselves
     }
     
+    @Override
+    public RPSPlayer clone(){
+        return new HumanPlayer(io);
+    }
     
 }

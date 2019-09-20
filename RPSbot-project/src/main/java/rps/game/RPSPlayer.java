@@ -7,4 +7,5 @@ package rps.game;
 public interface RPSPlayer {
     Move getMove();
     void recordResult(Move myMove, Move opponentMove);
+    RPSPlayer clone();
 }

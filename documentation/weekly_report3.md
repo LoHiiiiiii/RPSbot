@@ -1,0 +1,7 @@
+# Weekly Report 3
+
+The third week was most productive by far. While I still managed to give this project sixish hours, which is less than ideal, I finally started to get to the meat of the project. A good chunk went into the research. Most sources pointed me to a markov chain, but the blogpost by Daniel Lawrence gave a more conrete way how to approach the problem. Thus I decided to follow his footsteps. This also meant that I could finally flesh out my specification document which was in poor condition.
+
+At first I struggled on how to implement the selection and the metas. Should the meta be it's own selector which houses and scores each of the variants? There were many approaches, but I liked mine where the selector populated itself with all the metapermutations of the primary strategies it was given. There will be some duplicate players with the strategies that don't depend at all on what the opponent does, but it is a small price to pay. For the random player I didn't want 5 unnecessary clones, so each selector adds its own random strategy player to its players.
+
+The biggest regret I had for this week is that I didn't manage to implement any selection method or more primary strategies so that I could actually test the selector. On top of that some of the tests are still clumped, and I didn't manage to remember/figure out how to check code coverage for junit tests on Netbeans, which would help me write some missing tests. 

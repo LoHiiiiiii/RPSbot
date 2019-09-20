@@ -26,4 +26,8 @@ public class SingleMovePlayer implements RPSPlayer {
         // Doesn't do anything because tactic isn't affected by what the result waas
     }
     
+    @Override
+    public RPSPlayer clone(){
+        return new SingleMovePlayer(myMove);
+    }
 }
