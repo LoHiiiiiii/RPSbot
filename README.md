@@ -5,5 +5,5 @@ An university project: a simple text interface that allows you to play rock-pape
 [Weekly report 1](../master/documentation/weekly_report1.md)\
 [Weekly report 2](../master/documentation/weekly_report2.md)\
 [Weekly report 3](../master/documentation/weekly_report3.md)\
-[Weekly report 3](../master/documentation/weekly_report4.md)
+[Weekly report 4](../master/documentation/weekly_report4.md)
 
