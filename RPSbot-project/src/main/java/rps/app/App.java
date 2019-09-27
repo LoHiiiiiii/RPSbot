@@ -3,7 +3,7 @@ package rps.app;
 import rps.game.RPSPlayer;
 import rps.game.RPSLogic;
 import rps.game.HumanPlayer;
-import rps.game.SingleMovePlayer;
+import rps.game.RotatingPlayer;
 import rps.game.Move;
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ public class App {
      */
     public void run(){
         RPSPlayer playerOne = new HumanPlayer(io);
-        RPSPlayer playerTwo = new SingleMovePlayer(Move.ROCK);
+        RPSPlayer playerTwo = new RotatingPlayer(Move.ROCK, 0);
         RPSLogic logic = new RPSLogic();
         
         Move playerOneMove;

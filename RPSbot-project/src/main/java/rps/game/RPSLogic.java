@@ -35,7 +35,7 @@ public class RPSLogic {
     public void evaluateMoves(Move playerOneMove, Move playerTwoMove){
         int change = getScoreChange(playerOneMove, playerTwoMove);
         playerOneScore += Math.max(0, change);
-        playerTwoScore += Math.min(0, change);
+        playerTwoScore -= Math.min(0, change);
     }
     
     public int getScoreChange(Move playerOneMove, Move playerTwoMove){
@@ -73,18 +73,43 @@ public class RPSLogic {
     public static Move rotateMove(Move move, int rotation){
         rotation = rotation % 3;
         switch(rotation){
-            case 2:switch(move){
+            case 1:
+                switch(move){
                     case ROCK: return Move.PAPER;
                     case PAPER: return Move.SCISSORS;
                     default: return Move.ROCK;
                 }
-            case 1:
+            case 2:
                 switch(move){
                     case ROCK: return Move.SCISSORS;
                     case PAPER: return Move.ROCK;
                     default: return Move.PAPER;
                 }
             default: return move;
+        }
+    }
+    
+    public static int getRotation(Move moveOne, Move moveTwo){
+        if (moveOne == moveTwo)
+            return 0;
+        else {
+            switch(moveOne){
+                case ROCK:
+                    switch(moveTwo){
+                        case PAPER: return 1;
+                        default: return 2;
+                    }
+                case PAPER:
+                    switch(moveTwo){
+                        case SCISSORS: return 1;
+                        default: return 2;
+                    }
+                default:
+                    switch(moveTwo){
+                        case ROCK: return 1;
+                        default: return 2;
+                    }
+            }
         }
     }
 }

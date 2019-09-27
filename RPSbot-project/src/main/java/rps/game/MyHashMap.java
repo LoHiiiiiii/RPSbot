@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class MyHashMap<K, V> {
     //For now just a wrapper for Java's hashmap
     
-    HashMap<K, V> hashMap;
+    private final HashMap<K, V> hashMap;
     
     public MyHashMap(){
         hashMap = new HashMap<>();
@@ -34,5 +34,17 @@ public class MyHashMap<K, V> {
     
     public Object[] keys(){
         return hashMap.keySet().toArray();
+    }
+    
+    public K[] keys(K[] array){
+        return hashMap.keySet().toArray(array);
+    }
+    
+    public int size(){
+        return hashMap.size();
+    }
+    
+    public void clear(){
+        hashMap.clear();
     }
 }

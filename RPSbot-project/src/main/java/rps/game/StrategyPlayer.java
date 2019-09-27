@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author vertt
  */
-public class Selector implements RPSPlayer {
+public class StrategyPlayer implements RPSPlayer {
     
     private enum Meta {
         P0a,
@@ -24,8 +24,8 @@ public class Selector implements RPSPlayer {
 
     private class MetaFilter implements RPSPlayer {
     
-        private Meta myMeta;
-        private RPSPlayer myPlayer;
+        private final Meta myMeta;
+        private final RPSPlayer myPlayer;
     
         public MetaFilter(Meta myMeta, RPSPlayer myPlayer){
             this.myMeta = myMeta;
@@ -64,76 +64,75 @@ public class Selector implements RPSPlayer {
         }
     }
     
+    BaseSelector[][] selectorLayers;
     RPSPlayer[] playerParams; //None of these are referred in the actual sets, to simplify cloning and allowing same list to initiate multiple selectors
     
-    SelectionMethod myMethod;
-    MyHashMap<RPSPlayer, Integer> scores;
-    MyHashMap<RPSPlayer, Move> lastChosenMoves;
-    RPSPlayer lastChosenPlayer;
+    MyList<RPSPlayer> strategies;
     Random random;
     
     /**
-     * Intializes a selector with the 6 meta variants of each player and one random player
-     * @param myMethod what evaluation method this selector uses
+     * 
+     * @param selectorLayers An array of array of selectors. Each selector in the first array is given the next layer as strategies to select from. The final layer is given the actual strategies.
      * @param random a random seed for the random player
-     * @param players an arbitary amount of RPS players that the selector will choose from, can be other selectors
+     * @param players an arbitary amount of RPS strategies that the selector will choose from. Works with selectors, but intended to use primary strategies.
      */
-    public Selector(SelectionMethod myMethod, Random random, RPSPlayer... players ){
-        this.myMethod = myMethod;
+    public StrategyPlayer(BaseSelector[][] selectorLayers, Random random, RPSPlayer... players ){
+        this.selectorLayers = selectorLayers;
         playerParams = players;
-        scores = new MyHashMap<>();
-        lastChosenMoves = new MyHashMap<>();
-        
         Meta[] metaValues = Meta.values();
+        
+        strategies = new MyList<>();
+        int i = 0;
+        
         for (RPSPlayer p : players){
             for (Meta m : metaValues){
-                scores.put(new MetaFilter(m, p.clone()), 0);
-                lastChosenMoves.put(new MetaFilter(m, p.clone()), Move.ROCK); //Previous move shouldn't be checked with this value
+                strategies.add(new MetaFilter(m, p.clone()));
+                i++;
             }
         }
-        RPSPlayer randomPlayer = new RandomPlayer(random);
-        scores.put(randomPlayer, 0);
-        lastChosenMoves.put(randomPlayer, Move.ROCK);
+        strategies.add(new RandomPlayer(random));
     }
     
     /**
-     * Goes through each player in the map and records what they would play. Also keeps a reference to the chosen player.
-     * @return The move the first player with the highest score played
+     * Returns a move by a random topmost selector. If no selectors are given, returns a move from a random strategy, which has atleast the RandomPlayer.
+     * @return The move that the StrategyPlayer thinks will win
      */
     @Override
     public Move getMove(){
-        int hiscore = Integer.MIN_VALUE;
-        Move move = Move.ROCK;
-        Move chosenMove = Move.ROCK;
-        for(RPSPlayer p : (RPSPlayer[])scores.keys()){
-            move = p.getMove();
-            lastChosenMoves.replace(p, move);
-            if (scores.get(p) > hiscore){
-                hiscore = scores.get(p);
-                chosenMove = move;
-                lastChosenPlayer = p;
-            }
+        if (selectorLayers == null || selectorLayers.length == 0 || selectorLayers[0].length == 0){
+            return strategies.get(random.nextInt(strategies.count())).getMove();
+        } else {
+            return selectorLayers[0][random.nextInt(selectorLayers[0].length)].getMove();
         }
-        return chosenMove;
     }
     
     /**
-     * Records results for each player in the map and updates the score via the method
-     * @param myMove what the Selector played, discarded for what each player in the map played
-     * @param opponentMove
+     * Records results for each strategy and selector.
+     * @param myMove what this StragyPlayer played
+     * @param opponentMove what the opponent played
      */
     @Override
     public void recordResult(Move myMove, Move opponentMove){
-        for(RPSPlayer p : (RPSPlayer[])scores.keys()){
-            myMove = lastChosenMoves.get(p);
-            p.recordResult(myMove, opponentMove);
-            scores.replace(p, myMethod.getScore(scores.get(p), myMove, opponentMove, p == lastChosenPlayer));
+        for (int i = 0; i < selectorLayers.length; ++i){
+            for (int j = 0; j < selectorLayers[i].length; ++i){
+               selectorLayers[i][j].recordResult(myMove, opponentMove);
+            }
+        }
+        for (int i = 0; i < strategies.count() ; ++i){
+            strategies.get(i).recordResult(myMove, opponentMove);
         }
     }
     
     @Override
     public RPSPlayer clone(){
-        return new Selector(myMethod, random, playerParams);
+        BaseSelector[][] clonedLayers = new BaseSelector[selectorLayers.length][];
+        for (int i = 0; i < clonedLayers.length; ++i){
+            clonedLayers[i] = new BaseSelector[selectorLayers[i].length];
+            for (int j = 0; j < clonedLayers[i].length; ++i){
+               clonedLayers[i][j] = (BaseSelector)selectorLayers[i][j].clone();
+            }
+        }
+        return new StrategyPlayer(clonedLayers, random, playerParams);
     }
     
 }

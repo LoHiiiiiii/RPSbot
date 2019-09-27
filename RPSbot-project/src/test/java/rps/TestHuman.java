@@ -5,19 +5,19 @@
  */
 package rps;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import rps.game.Move;
-import rps.game.SingleMovePlayer;
-import rps.game.RPSLogic;
-import rps.game.HumanPlayer;
+import static org.junit.Assert.assertFalse;
+import org.junit.Test;
 import rps.app.IO;
+import rps.game.HumanPlayer;
+import rps.game.Move;
+import rps.game.RPSPlayer;
 
 /**
  *
  * @author vertt
  */
-public class RPSTests {
+public class TestHuman {
     
     class DummyIO implements IO{
         
@@ -44,31 +44,7 @@ public class RPSTests {
     }
     
     @Test
-    public void testSingleMovePlayer(){
-     SingleMovePlayer smp = new SingleMovePlayer(Move.ROCK);
-     assertEquals(Move.ROCK, smp.getMove());
-    }
-    
-    @Test
-    public void testRPSLogic(){
-     RPSLogic logic = new RPSLogic();
-     logic.startGame(2);
-     logic.evaluateMoves(Move.PAPER, Move.ROCK);
-     assertEquals(1, logic.getPlayerOneScore());
-     assertEquals(0, logic.getPlayerTwoScore());
-     logic.evaluateMoves(Move.SCISSORS, Move.ROCK);
-     assertEquals(1, logic.getPlayerOneScore());
-     assertEquals(1, logic.getPlayerTwoScore());
-     logic.evaluateMoves(Move.SCISSORS, Move.PAPER);
-     assertEquals(2, logic.getPlayerOneScore());
-     assertEquals(1, logic.getPlayerTwoScore());
-     assertEquals(true, logic.playerOneHasWon());
-     assertEquals(false, logic.playerTwoHasWon());
-     assertEquals("2 - 1", logic.getScore());
-    }
-    
-    @Test
-    public void testHumanPlayer(){
+    public void testIO(){
         DummyIO io = new DummyIO();
         HumanPlayer hp = new HumanPlayer(io);
         io.setString("R");
@@ -80,5 +56,21 @@ public class RPSTests {
         io.setString("X");
         assertEquals(Move.ROCK, hp.getMove());
         assertEquals(2, io.rounds);
+        hp.recordResult(Move.ROCK, Move.PAPER); //Purely for code coverage
+    }
+    
+    @Test
+    public void testClone(){
+        DummyIO io = new DummyIO();
+        HumanPlayer hp = new HumanPlayer(io);
+        RPSPlayer clone = hp.clone();
+        io.setString("R");
+        assertFalse(clone == null);
+        assertEquals(hp.getMove(), clone.getMove());
+    }
+    
+    @Test(expected=NullPointerException.class)
+    public void testNullIO(){
+        HumanPlayer hp = new HumanPlayer(null);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class RandomPlayer implements RPSPlayer {
     
-    Random random;
+    private Random random;
     
     /**
      *Constructor which in the random number generator is given

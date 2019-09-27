@@ -10,5 +10,5 @@ package rps.game;
  * @author vertt
  */
 public interface SelectionMethod {
-    int getScore(int currentScore, Move playerMove, Move opponentMove, Boolean chosenOne);
+    void setPlayers(RPSPlayer[] players);
 }
