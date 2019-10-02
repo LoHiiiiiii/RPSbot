@@ -1,0 +1,5 @@
+# Testing document
+
+Most of the tests during this project will be simple JUnit tests that make sure that the classes work as intended. Performance testing isn't as important, as the goal is simply to beat human players, and a higher winrate will be a priority over performance to a high degree. The most interesting testing will be the test that decides the values for the selectors.
+
+I will pit 18 522 single selectorlayer AIs against eachother. Each double parameter will receive a a value between 0.0 and 1.0 with a step of 0.05. The bots will compete each other in a round robin style tournament, and each single game will consist of a first to 100 match. The winner of this tournament shall be used as the top-most layer for the final AI. The winner and some top contenders and prechosen AI's (such as naive scoring) shall be the second layer, after which the primarystrategies through the metafilter will be available. The size of the step and amount of wins needed to win a game haven't been set in stone as the games need to finish in a somewhat reasonable time, although I am willing to let the program run for multiple hours.

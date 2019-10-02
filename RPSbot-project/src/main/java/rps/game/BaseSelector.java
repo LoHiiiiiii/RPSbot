@@ -16,10 +16,10 @@ public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
      */
     @Override
     public Move getMove() {
-        double hiscore = Double.MIN_VALUE;
+        double hiscore = -Double.MAX_VALUE;
         Move move;
-        Move chosenMove = Move.ROCK; // Has to be initiated for the case that all scores are Integer.MIN_VALUE
-        for(RPSPlayer p : (RPSPlayer[])scores.keys()){
+        Move chosenMove = Move.PAPER; // Has to be initiated for the case that all scores are Integer.MIN_VALUE
+        for(RPSPlayer p : scores.keys(new RPSPlayer[scores.size()])){
             move = p.getMove();
             lastChosenMoves.replace(p, move);
             if (scores.get(p) > hiscore){
@@ -32,14 +32,21 @@ public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
     }
     
     @Override
-    public RPSPlayer clone() {
-        return null;
-    }
+    public abstract RPSPlayer clone();
     
     @Override
     public void setPlayers(RPSPlayer[] players) {
         scores.clear();
-        for(RPSPlayer p : players)
+        lastChosenMoves.clear();
+        for(RPSPlayer p : players){
             scores.put(p, 0.0);
+            lastChosenMoves.put(p, Move.ROCK);
+        }
+    }
+    
+    public void setScoresAndMoves(MyHashMap<RPSPlayer, Double> scores, MyHashMap<RPSPlayer, Move> lastChosenMoves){
+        this.scores = scores;
+        this.lastChosenMoves = lastChosenMoves;
+        
     }
 }

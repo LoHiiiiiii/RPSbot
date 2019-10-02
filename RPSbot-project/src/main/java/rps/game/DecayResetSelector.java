@@ -39,24 +39,36 @@ public class DecayResetSelector extends BaseSelector {
         double randomValue;
         Move winningMove = RPSLogic.rotateMove(opponentMove, 1);
         Move losingMove = RPSLogic.rotateMove(opponentMove, 2);
-        for(RPSPlayer p : (RPSPlayer[])scores.keys()){
+        for(RPSPlayer p : scores.keys(new RPSPlayer[scores.size()])){
             score = scores.get(p);
             if (lastChosenMoves.get(p) == losingMove){
                 randomValue = random.nextDouble();
-                if ((resetUpwards || score > resetValue) && ((p == lastChosenPlayer && randomValue > chosenResetChance) || (p != lastChosenPlayer && randomValue > resetChance)))
+                if ((resetUpwards || score > resetValue) && ((p == lastChosenPlayer && randomValue < chosenResetChance) || (p != lastChosenPlayer && randomValue < resetChance)))
                     score = resetValue;
                 else 
                     score--;
             } else if (lastChosenMoves.get(p) == winningMove)
                 score++;
-            score *= decayRate;
+            score *= 1-decayRate;
             scores.replace(p, score);
         }
     }
 
     @Override
     public RPSPlayer clone() {
-        return new DecayResetSelector(decayRate, resetChance, chosenResetChance, resetUpwards, random);
+        DecayResetSelector dsr = new DecayResetSelector(decayRate, resetChance, chosenResetChance, resetUpwards, random);
+        MyHashMap<RPSPlayer, Double> newScores = new MyHashMap<>();
+        MyHashMap<RPSPlayer, Move> newLastMoves = new MyHashMap<>();
+        for(RPSPlayer key : scores.keys(new RPSPlayer[scores.size()])){
+            newScores.put(key, scores.get(key));
+            newLastMoves.put(key, lastChosenMoves.get(key));
+        }
+        dsr.setScoresAndMoves(newScores, newLastMoves);
+        return dsr;
+    }
+    
+    public MyHashMap<RPSPlayer, Double> getScores(){
+        return scores;
     }
     
 }

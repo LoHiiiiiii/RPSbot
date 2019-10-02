@@ -78,16 +78,17 @@ public class StrategyPlayer implements RPSPlayer {
      */
     public StrategyPlayer(BaseSelector[][] selectorLayers, Random random, RPSPlayer... players ){
         this.selectorLayers = selectorLayers;
+        this.random = random;
         playerParams = players;
         Meta[] metaValues = Meta.values();
         
         strategies = new MyList<>();
-        int i = 0;
         
         for (RPSPlayer p : players){
+            if (p == null)
+                continue;
             for (Meta m : metaValues){
                 strategies.add(new MetaFilter(m, p.clone()));
-                i++;
             }
         }
         strategies.add(new RandomPlayer(random));
@@ -125,11 +126,14 @@ public class StrategyPlayer implements RPSPlayer {
     
     @Override
     public RPSPlayer clone(){
-        BaseSelector[][] clonedLayers = new BaseSelector[selectorLayers.length][];
-        for (int i = 0; i < clonedLayers.length; ++i){
-            clonedLayers[i] = new BaseSelector[selectorLayers[i].length];
-            for (int j = 0; j < clonedLayers[i].length; ++i){
-               clonedLayers[i][j] = (BaseSelector)selectorLayers[i][j].clone();
+        BaseSelector[][] clonedLayers = null;
+        if (selectorLayers != null){
+            clonedLayers = new BaseSelector[selectorLayers.length][];
+            for (int i = 0; i < clonedLayers.length; ++i){
+                clonedLayers[i] = new BaseSelector[selectorLayers[i].length];
+                for (int j = 0; j < clonedLayers[i].length; ++i){
+                    clonedLayers[i][j] = (BaseSelector)selectorLayers[i][j].clone();
+                }
             }
         }
         return new StrategyPlayer(clonedLayers, random, playerParams);

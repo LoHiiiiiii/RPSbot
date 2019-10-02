@@ -12,6 +12,7 @@ import org.junit.Test;
 import rps.game.AntirotatingPlayer;
 import rps.game.FrequencyCountPlayer;
 import rps.game.Move;
+import rps.game.RandomPlayer;
 import rps.game.RotatingPlayer;
 
 /**
@@ -65,5 +66,21 @@ public class TestPrimaryStrategies {
         Move m = fcp.getMove();
         assertTrue(m == Move.SCISSORS || m == Move.ROCK);
         assertEquals(Move.SCISSORS, clone.getMove());
+    }
+    
+    @Test
+    public void testRandomPlayer(){
+        int seed = 2; //Seed where first three moves are different
+        Random random = new Random(seed);
+        RandomPlayer rp = new RandomPlayer(random);
+        Move moveOne = rp.getMove();
+        Move moveTwo = rp.getMove();
+        Move moveThree = rp.getMove();
+        Boolean allMoves = moveOne != moveTwo && moveTwo != moveThree && moveThree != moveOne;
+        assertTrue(allMoves);
+        random.setSeed(seed);
+        rp.recordResult(moveOne, moveTwo);
+        assertEquals(moveOne, rp.getMove());
+        assertEquals(moveTwo, rp.clone().getMove());
     }
 }

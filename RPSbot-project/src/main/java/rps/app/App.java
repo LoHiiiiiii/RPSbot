@@ -23,9 +23,7 @@ public class App {
      * Two players and the game logic is instantiated. In the loop both players are asked for movest,
      * then both of the chosen moves are printed and evaluated. Then the score is printed and the loop continues if neither player won.
      */
-    public void run(){
-        RPSPlayer playerOne = new HumanPlayer(io);
-        RPSPlayer playerTwo = new RotatingPlayer(Move.ROCK, 0);
+    public Boolean run(RPSPlayer playerOne, RPSPlayer playerTwo){
         RPSLogic logic = new RPSLogic();
         
         Move playerOneMove;
@@ -44,10 +42,10 @@ public class App {
             io.print(logic.getScore());
             if (logic.playerOneHasWon()){
                 io.print("Player one wins!");
-                break;
+                return true;
             } else if (logic.playerTwoHasWon()){
                 io.print("Player two wins!");
-                break;
+                return false;
             }
         }
     }
