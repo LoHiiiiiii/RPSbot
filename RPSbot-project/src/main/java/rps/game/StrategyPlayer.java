@@ -83,6 +83,8 @@ public class StrategyPlayer implements RPSPlayer {
         Meta[] metaValues = Meta.values();
         
         strategies = new MyList<>();
+        //Before loop so priotized in ties
+        strategies.add(new RandomPlayer(random));
         
         for (RPSPlayer p : players){
             if (p == null)
@@ -91,7 +93,15 @@ public class StrategyPlayer implements RPSPlayer {
                 strategies.add(new MetaFilter(m, p.clone()));
             }
         }
-        strategies.add(new RandomPlayer(random));
+        
+        Boolean lastLayer;
+        
+        for (int i = 0; i < selectorLayers.length; ++i){
+            lastLayer = (i == selectorLayers.length -1);
+            for (int j = 0; j < selectorLayers[i].length; ++j){
+                selectorLayers[i][j].setPlayers((lastLayer) ? players : selectorLayers[i+1]);
+            }
+        }
     }
     
     /**
@@ -115,7 +125,7 @@ public class StrategyPlayer implements RPSPlayer {
     @Override
     public void recordResult(Move myMove, Move opponentMove){
         for (int i = 0; i < selectorLayers.length; ++i){
-            for (int j = 0; j < selectorLayers[i].length; ++i){
+            for (int j = 0; j < selectorLayers[i].length; ++j){
                selectorLayers[i][j].recordResult(myMove, opponentMove);
             }
         }
@@ -137,6 +147,10 @@ public class StrategyPlayer implements RPSPlayer {
             }
         }
         return new StrategyPlayer(clonedLayers, random, playerParams);
+    }
+    
+    public String printHighestSelector(){
+        return selectorLayers[0][0].toString();
     }
     
 }

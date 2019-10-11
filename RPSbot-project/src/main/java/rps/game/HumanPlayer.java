@@ -26,7 +26,7 @@ public class HumanPlayer implements RPSPlayer {
      */
     @Override
     public Move getMove() {
-        String s = io.readLine("Choose your next move! (Rock, Paper, Scissors or Forfeit)");
+        String s = io.readLine("Choose your next move! (Rock, Paper or Scissors)");
         char c = 0; //Default value
         if (s.length() > 0)
             c = s.charAt(0);

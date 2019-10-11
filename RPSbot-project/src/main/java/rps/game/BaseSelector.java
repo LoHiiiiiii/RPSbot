@@ -6,8 +6,8 @@ package rps.game;
  */
 public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
     
-    protected MyHashMap<RPSPlayer, Double> scores = new MyHashMap<>();
-    protected MyHashMap<RPSPlayer, Move> lastChosenMoves = new MyHashMap<>();
+    protected MyList<Pair<RPSPlayer, Double>> scores = new MyList<>();
+    protected MyList<Pair<RPSPlayer, Move>> lastChosenMoves = new MyList<>();
     protected RPSPlayer lastChosenPlayer;
 
     /**
@@ -18,14 +18,14 @@ public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
     public Move getMove() {
         double hiscore = -Double.MAX_VALUE;
         Move move;
-        Move chosenMove = Move.PAPER; // Has to be initiated for the case that all scores are Integer.MIN_VALUE
-        for(RPSPlayer p : scores.keys(new RPSPlayer[scores.size()])){
-            move = p.getMove();
-            lastChosenMoves.replace(p, move);
-            if (scores.get(p) > hiscore){
-                hiscore = scores.get(p);
+        Move chosenMove = Move.PAPER; // Has to be initiated for the case that all scores are -Integer.MAX_VALUE or no players
+        for(int i = 0; i < scores.count(); ++i){
+            move = scores.get(i).key.getMove();
+            lastChosenMoves.get(i).value = move;
+            if (scores.get(i).value > hiscore){
+                hiscore = scores.get(i).value;
                 chosenMove = move;
-                lastChosenPlayer = p;
+                lastChosenPlayer = scores.get(i).key;
             }
         }
         return chosenMove;
@@ -39,12 +39,12 @@ public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
         scores.clear();
         lastChosenMoves.clear();
         for(RPSPlayer p : players){
-            scores.put(p, 0.0);
-            lastChosenMoves.put(p, Move.ROCK);
+            scores.add(new Pair(p, 0.0));
+            lastChosenMoves.add(new Pair(p, Move.ROCK));
         }
     }
     
-    public void setScoresAndMoves(MyHashMap<RPSPlayer, Double> scores, MyHashMap<RPSPlayer, Move> lastChosenMoves){
+    public void setScoresAndMoves(MyList<Pair<RPSPlayer, Double>> scores, MyList<Pair<RPSPlayer, Move>> lastChosenMoves){
         this.scores = scores;
         this.lastChosenMoves = lastChosenMoves;
         

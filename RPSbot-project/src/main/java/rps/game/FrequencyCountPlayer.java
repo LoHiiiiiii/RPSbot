@@ -59,5 +59,4 @@ public class FrequencyCountPlayer implements RPSPlayer {
     public RPSPlayer clone() {
         return new FrequencyCountPlayer(random);
     }
-    
 }

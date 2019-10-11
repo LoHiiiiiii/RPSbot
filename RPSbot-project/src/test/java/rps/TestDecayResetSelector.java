@@ -28,13 +28,13 @@ public class TestDecayResetSelector {
         drs.setPlayers(new RPSPlayer[]{rock, scissors});
         drs.getMove();
         drs.recordResult(Move.ROCK, Move.PAPER);
-        assertEquals(drs.getScores().get(scissors), 0.9, 0.01);
-        assertEquals(drs.getScores().get(rock), -0.9, 0.01);
+        assertEquals(drs.getScores().get(1).value, 0.9, 0.01);
+        assertEquals(drs.getScores().get(0).value, -0.9, 0.01);
         assertEquals(Move.SCISSORS, drs.getMove());
         assertEquals(drs.getMove(), drs.clone().getMove());
         drs.recordResult(Move.SCISSORS, Move.ROCK);
-        assertEquals(drs.getScores().get(scissors), 0, 0.01);
-        assertEquals(drs.getScores().get(rock), -0.81, 0.01);
+        assertEquals(drs.getScores().get(1).value ,0, 0.01);
+        assertEquals(drs.getScores().get(0).value, -0.81, 0.01);
         assertEquals(Move.SCISSORS, drs.getMove());
     }
 }

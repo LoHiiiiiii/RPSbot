@@ -26,7 +26,7 @@ public class TestApp {
     public void testApp(){
         App app = new App();
         app.init(new DummyIO());
-        assertEquals(true, app.run(new RotatingPlayer(Move.ROCK, 0), new RotatingPlayer(Move.SCISSORS, 0)));
-        assertEquals(false, app.run(new RotatingPlayer(Move.SCISSORS, 0), new RotatingPlayer(Move.ROCK, 0)));
+        assertEquals(true, app.run(new RotatingPlayer(Move.ROCK, 0), new RotatingPlayer(Move.SCISSORS, 0), 5));
+        assertEquals(false, app.run(new RotatingPlayer(Move.SCISSORS, 0), new RotatingPlayer(Move.ROCK, 0), 5));
     }
 }

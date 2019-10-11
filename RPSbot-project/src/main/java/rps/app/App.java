@@ -22,15 +22,18 @@ public class App {
     /**
      * Two players and the game logic is instantiated. In the loop both players are asked for movest,
      * then both of the chosen moves are printed and evaluated. Then the score is printed and the loop continues if neither player won.
+     * @param playerOne
+     * @param playerTwo
+     * @return Did playerOne win.
      */
-    public Boolean run(RPSPlayer playerOne, RPSPlayer playerTwo){
+    public Boolean run(RPSPlayer playerOne, RPSPlayer playerTwo, int wins){
         RPSLogic logic = new RPSLogic();
         
         Move playerOneMove;
         Move playerTwoMove;
         
-        logic.startGame(5);
-        io.print("Play to 5!");
+        logic.startGame(wins);
+        io.print("Play to " + wins + "!");
         
         while(true){
             playerOneMove = playerOne.getMove();
