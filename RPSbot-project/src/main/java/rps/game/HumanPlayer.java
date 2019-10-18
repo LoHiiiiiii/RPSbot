@@ -44,6 +44,11 @@ public class HumanPlayer implements RPSPlayer {
     }
     
     @Override
+    public void reset() {
+        //Doesn't reset anything since humans have to strategize themselves
+    }
+    
+    @Override
     public RPSPlayer clone(){
         return new HumanPlayer(io);
     }

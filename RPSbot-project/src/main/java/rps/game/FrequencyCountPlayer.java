@@ -13,8 +13,8 @@ import java.util.Random;
  */
 public class FrequencyCountPlayer implements RPSPlayer {
 
-    private Random random;
-    private MyHashMap<Move, Integer> frequencies = new MyHashMap<>();
+    private final Random random;
+    private final MyHashMap<Move, Integer> frequencies;
     
     /**
      *
@@ -22,6 +22,7 @@ public class FrequencyCountPlayer implements RPSPlayer {
      */
     public FrequencyCountPlayer(Random random){
         this.random = random;
+        frequencies = new MyHashMap<>();
         frequencies.put(Move.ROCK, 0);
         frequencies.put(Move.PAPER, 0);
         frequencies.put(Move.SCISSORS, 0);
@@ -43,7 +44,7 @@ public class FrequencyCountPlayer implements RPSPlayer {
             } else if (currentScore == hiscore)
                 possibleMoves.add(m);
         }
-        return (Move) possibleMoves.get(random.nextInt(possibleMoves.count()));
+        return (Move) possibleMoves.get(0);
     }
 
     /**
@@ -56,6 +57,15 @@ public class FrequencyCountPlayer implements RPSPlayer {
         frequencies.replace(RPSLogic.rotateMove(opponentMove, 1), frequencies.get(RPSLogic.rotateMove(opponentMove, 1)) + 1);
     }
 
+    @Override
+    public void reset(){
+        Move[] moves = new Move[frequencies.size()];
+        moves = frequencies.keys(moves);
+        for(Move m : moves){
+            frequencies.replace(m, 0);
+        }
+    }
+    
     public RPSPlayer clone() {
         return new FrequencyCountPlayer(random);
     }

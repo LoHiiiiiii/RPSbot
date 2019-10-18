@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import rps.game.AntirotatingPlayer;
 import rps.game.FrequencyCountPlayer;
+import rps.game.HistoryPatternPlayer;
 import rps.game.Move;
 import rps.game.RandomPlayer;
 import rps.game.RotatingPlayer;
@@ -32,6 +33,8 @@ public class TestPrimaryStrategies {
         rp.recordResult(rp.getMove(), Move.ROCK);
         assertEquals(Move.SCISSORS, rp.getMove());
         assertEquals(Move.PAPER, clone.getMove());
+        rp.reset();
+        assertEquals(Move.PAPER, rp.getMove());
     }
     
     @Test
@@ -43,8 +46,11 @@ public class TestPrimaryStrategies {
         assertEquals(clone.getMove(), arp.getMove());
         assertEquals(Move.ROCK, arp.getMove());
         arp.recordResult(Move.ROCK, Move.PAPER);
-        assertEquals(Move.ROCK, arp.getMove());
+        arp.recordResult(Move.ROCK, Move.SCISSORS);
+        assertEquals(Move.PAPER, arp.getMove());
         assertEquals(Move.ROCK, clone.getMove());
+        arp.reset();
+        assertEquals(Move.ROCK, arp.getMove());
     }
     
     @Test
@@ -66,6 +72,9 @@ public class TestPrimaryStrategies {
         Move m = fcp.getMove();
         assertTrue(m == Move.SCISSORS || m == Move.ROCK);
         assertEquals(Move.SCISSORS, clone.getMove());
+        fcp.reset();
+        fcp.recordResult(Move.ROCK, Move.PAPER);
+        assertEquals(Move.SCISSORS, fcp.getMove());
     }
     
     @Test
@@ -82,5 +91,28 @@ public class TestPrimaryStrategies {
         rp.recordResult(moveOne, moveTwo);
         assertEquals(moveOne, rp.getMove());
         assertEquals(moveTwo, rp.clone().getMove());
+        rp.reset();
+    }
+    
+    @Test
+    public void testHistoryPatternPlayer(){
+        HistoryPatternPlayer hpp = new HistoryPatternPlayer(Move.ROCK, false);
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        hpp.recordResult(Move.ROCK, Move.PAPER);
+        hpp.recordResult(Move.ROCK, Move.SCISSORS);
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        assertEquals(Move.SCISSORS, hpp.getMove());
+        hpp.reset();
+        assertEquals(Move.ROCK, hpp.getMove());
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        hpp.recordResult(Move.ROCK, Move.PAPER);
+        hpp.recordResult(Move.ROCK, Move.SCISSORS);
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        hpp.recordResult(Move.ROCK, Move.PAPER);
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        hpp.recordResult(Move.ROCK, Move.ROCK);
+        hpp.recordResult(Move.ROCK, Move.PAPER);
+        assertEquals(Move.PAPER, hpp.getMove());
     }
 }

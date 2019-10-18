@@ -49,4 +49,12 @@ public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
         this.lastChosenMoves = lastChosenMoves;
         
     }
+    
+    @Override
+    public void reset(){
+        for (int i = 0; i < scores.count(); ++i){
+            scores.get(i).value = 0.0;
+            lastChosenMoves.get(i).value = Move.ROCK;
+        }
+    }
 }

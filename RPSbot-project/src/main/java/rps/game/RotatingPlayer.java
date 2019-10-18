@@ -6,8 +6,9 @@ package rps.game;
  */
 public class RotatingPlayer implements RPSPlayer {
     
+    private Move startingMove;
     private Move previousMove;
-    int rotationAmount;
+    private int rotationAmount;
     
     /**
      *Constructor which in the starting move is specified and by how much the previous move is rotated by.
@@ -15,6 +16,7 @@ public class RotatingPlayer implements RPSPlayer {
      * @param rotationAmount
      */
     public RotatingPlayer(Move startingMove, int rotationAmount){
+        this.startingMove = startingMove;
         this.previousMove = startingMove;
         this.rotationAmount = rotationAmount;
     }
@@ -27,6 +29,11 @@ public class RotatingPlayer implements RPSPlayer {
     @Override
     public void recordResult(Move myMove, Move opponentMove){
         previousMove = myMove;
+    }
+    
+    @Override
+    public void reset(){
+        previousMove = startingMove;
     }
     
     @Override

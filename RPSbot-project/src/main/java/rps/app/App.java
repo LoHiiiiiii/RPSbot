@@ -24,6 +24,7 @@ public class App {
      * then both of the chosen moves are printed and evaluated. Then the score is printed and the loop continues if neither player won.
      * @param playerOne
      * @param playerTwo
+     * @param wins score needed to win
      * @return Did playerOne win.
      */
     public Boolean run(RPSPlayer playerOne, RPSPlayer playerTwo, int wins){

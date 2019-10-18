@@ -9,11 +9,14 @@ public class AntirotatingPlayer implements RPSPlayer {
     private Move previousMove;
     int rotationAmount = 0;
     
+    private final Move startingMove;
+    
     /**
      *Constructor which in the starting move is specified and by how much the previous move is rotated by.
      * @param startingMove
      */
     public AntirotatingPlayer(Move startingMove){
+        this.startingMove = startingMove;
         this.previousMove = startingMove;
     }
     
@@ -31,5 +34,11 @@ public class AntirotatingPlayer implements RPSPlayer {
     @Override
     public RPSPlayer clone(){
         return new AntirotatingPlayer(previousMove);
+    }
+    
+    @Override
+    public void reset(){
+        rotationAmount = 0;
+        previousMove = startingMove;
     }
 }

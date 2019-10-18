@@ -5,6 +5,7 @@
  */
 package rps.game;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -48,7 +49,7 @@ public class StrategyPlayer implements RPSPlayer {
         /**
         * Records the result, but mirrored for type b metas, so they instead think what the opponent should play.
         * @param myMove The move the player chose. Flipped with opponentMove for b type metas
-        * @param myMove The move the opponent chose. Flipped with myMove for b type metas
+        * @param opponentMove The move the opponent chose. Flipped with myMove for b type metas
         */
         @Override
         public void recordResult(Move myMove, Move opponentMove){
@@ -56,6 +57,11 @@ public class StrategyPlayer implements RPSPlayer {
                 case P0a: case P1a: case P2a: myPlayer.recordResult(myMove, opponentMove);
                 default: myPlayer.recordResult(opponentMove, myMove);
             }
+        }
+        
+        @Override
+        public void reset(){
+            myPlayer.reset();
         }
         
         @Override
@@ -67,7 +73,7 @@ public class StrategyPlayer implements RPSPlayer {
     BaseSelector[][] selectorLayers;
     RPSPlayer[] playerParams; //None of these are referred in the actual sets, to simplify cloning and allowing same list to initiate multiple selectors
     
-    MyList<RPSPlayer> strategies;
+    RPSPlayer[] strategies;
     Random random;
     
     /**
@@ -82,24 +88,30 @@ public class StrategyPlayer implements RPSPlayer {
         playerParams = players;
         Meta[] metaValues = Meta.values();
         
-        strategies = new MyList<>();
+        strategies = new RPSPlayer[players.length * metaValues.length +1];
         //Before loop so priotized in ties
-        strategies.add(new RandomPlayer(random));
+        int index = 0;
+        strategies[index] = new RandomPlayer(random);
         
         for (RPSPlayer p : players){
             if (p == null)
                 continue;
             for (Meta m : metaValues){
-                strategies.add(new MetaFilter(m, p.clone()));
+                index++;
+                strategies[index] = new MetaFilter(m, p.clone());
             }
         }
         
-        Boolean lastLayer;
+        if (index < strategies.length -1)
+            strategies = Arrays.copyOf(strategies, index);
         
-        for (int i = 0; i < selectorLayers.length; ++i){
-            lastLayer = (i == selectorLayers.length -1);
-            for (int j = 0; j < selectorLayers[i].length; ++j){
-                selectorLayers[i][j].setPlayers((lastLayer) ? players : selectorLayers[i+1]);
+        Boolean lastLayer;
+        if (selectorLayers != null){
+            for (int i = 0; i < selectorLayers.length; ++i){
+                lastLayer = (i == selectorLayers.length -1);
+                for (int j = 0; j < selectorLayers[i].length; ++j){
+                    selectorLayers[i][j].setPlayers((lastLayer) ? strategies : selectorLayers[i+1]);
+                }
             }
         }
     }
@@ -111,7 +123,7 @@ public class StrategyPlayer implements RPSPlayer {
     @Override
     public Move getMove(){
         if (selectorLayers == null || selectorLayers.length == 0 || selectorLayers[0].length == 0){
-            return strategies.get(random.nextInt(strategies.count())).getMove();
+            return strategies[random.nextInt(strategies.length)].getMove();
         } else {
             return selectorLayers[0][random.nextInt(selectorLayers[0].length)].getMove();
         }
@@ -129,8 +141,8 @@ public class StrategyPlayer implements RPSPlayer {
                selectorLayers[i][j].recordResult(myMove, opponentMove);
             }
         }
-        for (int i = 0; i < strategies.count() ; ++i){
-            strategies.get(i).recordResult(myMove, opponentMove);
+        for (int i = 0; i < strategies.length; ++i){
+            strategies[i].recordResult(myMove, opponentMove);
         }
     }
     
@@ -147,6 +159,19 @@ public class StrategyPlayer implements RPSPlayer {
             }
         }
         return new StrategyPlayer(clonedLayers, random, playerParams);
+    }
+    
+    @Override
+    public void reset(){
+        for(BaseSelector[] array : selectorLayers){
+            for (BaseSelector bs : array){
+                bs.reset();
+            }
+        }
+        
+        for (int i = 0; i < strategies.length; ++i){
+            strategies[i].reset();
+        }
     }
     
     public String printHighestSelector(){

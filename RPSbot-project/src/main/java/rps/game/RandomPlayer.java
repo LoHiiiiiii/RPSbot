@@ -33,7 +33,12 @@ public class RandomPlayer implements RPSPlayer {
     
     @Override
     public void recordResult(Move myMove, Move opponentMove){
-        // Doesn't do anything because tactic isn't affected by what the result waas
+        // Doesn't do anything because tactic isn't affected by what the result was
+    }
+    
+    @Override
+    public void reset(){
+        // Doesn't do anything because tactic isn't affected by results, so no state to reset to
     }
  
     @Override

@@ -6,6 +6,7 @@ public class DecayResetSelector extends BaseSelector {
     private final double decayRate;
     private final double resetChance;
     private final double chosenResetChance;
+    private final Boolean tieIsLoss;
     private final Boolean resetUpwards;
     private final Random random;
     
@@ -16,13 +17,15 @@ public class DecayResetSelector extends BaseSelector {
      * @param decayRate Between 0 and 1.
      * @param resetChance Between 0 and 1.
      * @param chosenResetChance Between 0 and 1.
+     * @param tieIsLoss tie is considered the same as loss scoringwise
      * @param resetUpwards Whether to reset the losers score if it is below the resetValue.
      * @param random
      */
-    public DecayResetSelector(double decayRate, double resetChance, double chosenResetChance, Boolean resetUpwards, Random random){
+    public DecayResetSelector(double decayRate, double resetChance, double chosenResetChance, Boolean tieIsLoss, Boolean resetUpwards, Random random){
         this.decayRate = Math.min(1, Math.max(0,decayRate));
-        this.resetChance = Math.min(1, Math.max(0, resetChance));;
-        this.chosenResetChance = Math.min(1, Math.max(0, chosenResetChance));;
+        this.resetChance = Math.min(1, Math.max(0, resetChance));
+        this.chosenResetChance = Math.min(1, Math.max(0, chosenResetChance));
+        this.tieIsLoss = tieIsLoss;
         this.resetUpwards = resetUpwards;
         this.random = random;
     }
@@ -42,7 +45,7 @@ public class DecayResetSelector extends BaseSelector {
         RPSPlayer p;
         for(int i = 0; i < scores.count(); ++i){
             score = scores.get(i).value;
-            if (lastChosenMoves.get(i).value == losingMove){
+            if (lastChosenMoves.get(i).value == losingMove || (tieIsLoss && lastChosenMoves.get(i).value != winningMove)){
                 randomValue = random.nextDouble();
                 p = lastChosenMoves.get(i).key;
                 if ((resetUpwards || score > resetValue) && ((p == lastChosenPlayer && randomValue < chosenResetChance) || (p != lastChosenPlayer && randomValue < resetChance)))
@@ -51,14 +54,14 @@ public class DecayResetSelector extends BaseSelector {
                     score--;
             } else if (lastChosenMoves.get(i).value == winningMove)
                 score++;
-            score *= 1-decayRate;
+            score *= 1.0-decayRate;
             scores.get(i).value = score;
         }
     }
 
     @Override
     public RPSPlayer clone() {
-        DecayResetSelector dsr = new DecayResetSelector(decayRate, resetChance, chosenResetChance, resetUpwards, random);
+        DecayResetSelector dsr = new DecayResetSelector(decayRate, resetChance, chosenResetChance, resetUpwards, tieIsLoss, random);
         MyList<Pair<RPSPlayer, Double>> newScores = new MyList<>();
         MyList<Pair<RPSPlayer, Move>> newLastMoves = new MyList<>();
         for (int i = 0; i < scores.count(); ++i){
@@ -74,8 +77,13 @@ public class DecayResetSelector extends BaseSelector {
     }
     
     @Override
+    public void reset(){
+        super.reset();
+    }
+    
+    @Override
     public String toString(){
-        return "DecayResetSelector: Decay: " + decayRate + ", ResetChance: " + resetChance + ", ChosenResetChance: " + chosenResetChance + ", ResetUpwards: " + resetUpwards;
+        return "D: " + decayRate + ", R: " + resetChance + ", CR: " + chosenResetChance + ", RUp: " + resetUpwards + ", TieLoss: " + tieIsLoss;
     }
     
 }

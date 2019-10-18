@@ -12,11 +12,11 @@ package rps.game;
 public class MyHashMap<K, V> {
     
     private final Pair<K,V>[] pairs; 
-    private int hashCapacity = 4; //Simplest used case is for the three moves
+    private int hashCapacity; 
     private int size = 0;
     
     public MyHashMap(){
-        pairs = new Pair[hashCapacity];
+        this(4);//Simplest used case is for the three moves
     }
     
     public MyHashMap(int hashCapacity){
@@ -75,7 +75,7 @@ public class MyHashMap<K, V> {
     }
     
     public V get(K key){
-        if (key == null)
+        if (key == null || pairs == null)
             return null;
         int expectedHashCode = getHashCode(key);
         Pair<K,V> current;
@@ -132,7 +132,6 @@ public class MyHashMap<K, V> {
         Pair current, next;
         for(int i = 0; i < pairs.length; ++i){
             current = pairs[i];
-            next = null;
             while (current != null){
                 next = current.next;
                 current.next = null;

@@ -56,6 +56,7 @@ public class TestHuman {
         io.setString("X");
         assertEquals(Move.ROCK, hp.getMove());
         assertEquals(2, io.rounds);
+        hp.reset();
         hp.recordResult(Move.ROCK, Move.PAPER); //Purely for code coverage
     }
     
@@ -72,5 +73,6 @@ public class TestHuman {
     @Test(expected=NullPointerException.class)
     public void testNullIO(){
         HumanPlayer hp = new HumanPlayer(null);
+        
     }
 }
