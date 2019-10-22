@@ -11,7 +11,17 @@ package rps.game;
  */
 
 public enum Move{
-    ROCK,
-    PAPER,
-    SCISSORS
+    ROCK(0),
+    PAPER(1),
+    SCISSORS(2);
+    
+    private final Integer hierarchy;
+
+    private Move(final Integer hierarchy) {
+        this.hierarchy = hierarchy;
+    }
+
+    public Integer getHierarchy() {
+        return hierarchy;
+    }
 }

@@ -45,8 +45,7 @@ public class MyHashMap<K, V> {
                 size++;
             }
             return !replace;
-        }
-        else {
+        } else {
             Pair<K,V> current = pairs[hashCode];
             Pair<K,V> previous = null;
             while(current != null){
@@ -142,6 +141,9 @@ public class MyHashMap<K, V> {
     }
     
     private int getHashCode(K key){
+        if (key instanceof Move){
+            return ((Move)key).getHierarchy();
+        }
         return Math.abs(key.hashCode()) % hashCapacity;
     }
     

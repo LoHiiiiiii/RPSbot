@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import rps.game.AntirotatingPlayer;
+import rps.game.FollowupFrequencyPlayer;
 import rps.game.FrequencyCountPlayer;
 import rps.game.HistoryPatternPlayer;
 import rps.game.Move;
@@ -114,5 +115,29 @@ public class TestPrimaryStrategies {
         hpp.recordResult(Move.ROCK, Move.ROCK);
         hpp.recordResult(Move.ROCK, Move.PAPER);
         assertEquals(Move.PAPER, hpp.getMove());
+    }
+    
+    @Test
+    public void testFollowFrequency(){
+        Random random = new Random();
+        FollowupFrequencyPlayer ffp = new FollowupFrequencyPlayer(random);
+        FollowupFrequencyPlayer clone = (FollowupFrequencyPlayer) ffp.clone();
+        ffp.recordResult(Move.ROCK, Move.PAPER);
+        ffp.recordResult(Move.ROCK, Move.PAPER);
+        clone.recordResult(Move.ROCK, Move.PAPER);
+        clone.recordResult(Move.ROCK, Move.PAPER);
+        assertEquals(clone.getMove(), ffp.getMove());
+        assertEquals(Move.SCISSORS, ffp.getMove());
+        ffp.recordResult(Move.ROCK, Move.PAPER);
+        ffp.recordResult(Move.ROCK, Move.SCISSORS);
+        ffp.recordResult(Move.ROCK, Move.ROCK);
+        ffp.recordResult(Move.ROCK, Move.SCISSORS);
+        assertEquals(Move.PAPER, ffp.getMove());
+        assertEquals(Move.SCISSORS, clone.getMove());
+        assertEquals(Move.SCISSORS, clone.getMove());
+        ffp.reset();
+        ffp.recordResult(Move.ROCK, Move.ROCK);
+        ffp.recordResult(Move.ROCK, Move.ROCK);
+        assertEquals(Move.PAPER, ffp.getMove());
     }
 }

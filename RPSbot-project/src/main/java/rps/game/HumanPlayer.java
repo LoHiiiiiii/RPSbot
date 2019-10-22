@@ -26,16 +26,17 @@ public class HumanPlayer implements RPSPlayer {
      */
     @Override
     public Move getMove() {
-        String s = io.readLine("Choose your next move! (Rock, Paper or Scissors)");
-        char c = 0; //Default value
-        if (s.length() > 0)
-            c = s.charAt(0);
-        switch (c){
-            case 'R': case 'r': case 'K': case 'k': return Move.ROCK;
-            case 'P': case 'p': return Move.PAPER;
-            case 'S': case 's': return Move.SCISSORS;
-            default: return getMove();
-        }
+        while (true){
+            String s = io.readLine("Choose your next move! (Rock, Paper or Scissors)");
+            char c = 0; //Default value
+            if (s.length() > 0)
+                c = s.charAt(0);
+            switch (c){
+                case 'R': case 'r': case 'K': case 'k': return Move.ROCK;
+                case 'P': case 'p': return Move.PAPER;
+                case 'S': case 's': return Move.SCISSORS;
+            }
+       }
     }
 
     @Override
