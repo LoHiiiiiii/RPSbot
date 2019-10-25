@@ -11,7 +11,6 @@ public abstract class BaseSelector implements SelectionMethod, RPSPlayer {
     protected RPSPlayer lastChosenPlayer;
 
     /**
-     *
      * @return Move by the strategy with the highest score.
      */
     @Override

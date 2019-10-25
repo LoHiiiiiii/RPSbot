@@ -9,6 +9,7 @@ import java.util.Random;
 import rps.game.AntirotatingPlayer;
 import rps.game.BaseSelector;
 import rps.game.DecayResetSelector;
+import rps.game.FollowupFrequencyPlayer;
 import rps.game.FrequencyCountPlayer;
 import rps.game.HistoryPatternPlayer;
 import rps.game.Move;
@@ -16,12 +17,14 @@ import rps.game.RPSPlayer;
 import rps.game.RotatingPlayer;
 import rps.game.StrategyPlayer;
 
-/**
- *
- * @author vertt
- */
-public class PlayerConstructor {
+public abstract class PlayerConstructor {
     
+    /**
+     * Wrapper for creating a strategy Player with 2 selectorLayers, first one with only one selector, second one with 8 selectors. 
+     * Primarys strategies are 3 rotating players, each with different rotation value, a frequency count player, histroystring players for opponents move and
+     * one for both players' moves, one antirotating player and one followupfrequency player.
+     * @return the strategyPlayer that was constructed
+     */
     public static StrategyPlayer getStrategyPlayer(){
         Random rand = new Random();
         
@@ -39,7 +42,7 @@ public class PlayerConstructor {
         selectors[0] = topLayer;
         selectors[1] = bottomLayer;
         
-        RPSPlayer[] players = new RPSPlayer[7];
+        RPSPlayer[] players = new RPSPlayer[8];
         
         players[0] = new RotatingPlayer(Move.ROCK, 0);
         players[1] = new RotatingPlayer(Move.PAPER, 1);
@@ -48,24 +51,8 @@ public class PlayerConstructor {
         players[4] = new AntirotatingPlayer(Move.ROCK);
         players[5] = new HistoryPatternPlayer(Move.SCISSORS, false);
         players[6] = new HistoryPatternPlayer(Move.PAPER, true);
+        players[7] = new FollowupFrequencyPlayer(rand);
         
         return new StrategyPlayer(selectors, rand, players);
-    }
-    
-    public static RPSPlayer[] getFoes(){
-        Random rand = new Random();
-        
-        
-        RPSPlayer[] players = new RPSPlayer[7];
-        
-        players[0] = new RotatingPlayer(Move.ROCK, 0);
-        players[1] = new RotatingPlayer(Move.PAPER, 0);
-        players[2] = new RotatingPlayer(Move.SCISSORS, 0);
-        players[3] = new RotatingPlayer(Move.PAPER, 1);
-        players[4] = new RotatingPlayer(Move.SCISSORS, 2);
-        players[5] = new FrequencyCountPlayer(rand);
-        players[6] = new AntirotatingPlayer(Move.ROCK);
-        
-        return players;
     }
 }

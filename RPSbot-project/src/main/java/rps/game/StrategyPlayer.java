@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package rps.game;
-
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -94,16 +92,11 @@ public class StrategyPlayer implements RPSPlayer {
         strategies[index] = new RandomPlayer(random);
         
         for (RPSPlayer p : players){
-            if (p == null)
-                continue;
             for (Meta m : metaValues){
                 index++;
                 strategies[index] = new MetaFilter(m, p.clone());
             }
         }
-        
-        if (index < strategies.length -1)
-            strategies = Arrays.copyOf(strategies, index);
         
         Boolean lastLayer;
         if (selectorLayers != null){
@@ -153,7 +146,7 @@ public class StrategyPlayer implements RPSPlayer {
             clonedLayers = new BaseSelector[selectorLayers.length][];
             for (int i = 0; i < clonedLayers.length; ++i){
                 clonedLayers[i] = new BaseSelector[selectorLayers[i].length];
-                for (int j = 0; j < clonedLayers[i].length; ++i){
+                for (int j = 0; j < clonedLayers[i].length; ++j){
                     clonedLayers[i][j] = (BaseSelector)selectorLayers[i][j].clone();
                 }
             }
@@ -174,8 +167,7 @@ public class StrategyPlayer implements RPSPlayer {
         }
     }
     
-    public String printHighestSelector(){
-        return selectorLayers[0][0].toString();
+    public RPSPlayer[] getStrategies(){
+        return strategies;
     }
-    
 }
