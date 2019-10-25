@@ -13,13 +13,12 @@ public class DecayResetSelector extends BaseSelector {
     private final int resetValue = 0;
     
     /**
-     *
      * @param decayRate Between 0 and 1.
      * @param resetChance Between 0 and 1.
      * @param chosenResetChance Between 0 and 1.
      * @param tieIsLoss tie is considered the same as loss scoringwise
      * @param resetUpwards Whether to reset the losers score if it is below the resetValue.
-     * @param random
+     * @param random  Randomnumber generator to be used in determining if score is reset.
      */
     public DecayResetSelector(double decayRate, double resetChance, double chosenResetChance, Boolean tieIsLoss, Boolean resetUpwards, Random random){
         this.decayRate = Math.min(1, Math.max(0,decayRate));

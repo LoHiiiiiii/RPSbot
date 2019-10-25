@@ -19,7 +19,6 @@ public class FollowupFrequencyPlayer implements RPSPlayer {
     private Boolean firstMove = true;
     
     /**
-     *
      * @param random Randomnumber generator to be used in case of ties.
      */
     public FollowupFrequencyPlayer(Random random){
@@ -34,6 +33,9 @@ public class FollowupFrequencyPlayer implements RPSPlayer {
         }
     }
     
+    /**
+     * @return Move that beats the move the opponent uses most frequently after their previous move.
+     */
     @Override
     public Move getMove() {
         int hiscore = Integer.MIN_VALUE;
@@ -54,7 +56,7 @@ public class FollowupFrequencyPlayer implements RPSPlayer {
     }
 
     /**
-     * Adds 1 to the score of the move that would've won the opponents move
+     * Adds 1 to the score of the move that would've won the opponents move in the table for the opponent's previous move.
      * @param myMove
      * @param opponentMove
      */

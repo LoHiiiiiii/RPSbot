@@ -10,3 +10,5 @@ I will pit 18 522 single selectorlayer AIs against eachother. Each double parame
 
 I quickly found out that my a single game takes too long for me to use the values I had planned to use.
 Instead I took lighter iterations, first of which had only less than 500 bots. Then I looked for trends in the values of the top 10 highest performing AI's and planned the next test according to the results in order to narrow down something competitive.
+
+After running this system for a while, it became clear that AI vs AI rock-paper-scissors quickly degenerated into playing randomly. I had limited resources to try against human, but from the 5 different people I played, none could be the final bot in first to twenty and only one could get ahead of the both once before it had gained an advantage.

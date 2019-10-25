@@ -11,7 +11,7 @@ package rps.game;
  */
 public class MyHashMap<K, V> {
     
-    private final Pair<K,V>[] pairs; 
+    private final LinkedPair<K,V>[] pairs; 
     private int hashCapacity; 
     private int size = 0;
     
@@ -21,11 +21,10 @@ public class MyHashMap<K, V> {
     
     public MyHashMap(int hashCapacity){
         this.hashCapacity = hashCapacity;
-        pairs = new Pair[hashCapacity];
+        pairs = new LinkedPair[hashCapacity];
     }
     
     /**
-     *
      * @param key
      * @param value
      * @return Whether adding was succesful
@@ -38,7 +37,7 @@ public class MyHashMap<K, V> {
         if (key == null)
             return false;
         int hashCode = getHashCode(key);
-        Pair<K,V> newPair = new Pair(key, value);
+        LinkedPair<K,V> newPair = new LinkedPair(key, value);
         if (pairs[hashCode] == null){
             if (!replace){
                 pairs[hashCode] = newPair;
@@ -46,8 +45,8 @@ public class MyHashMap<K, V> {
             }
             return !replace;
         } else {
-            Pair<K,V> current = pairs[hashCode];
-            Pair<K,V> previous = null;
+            LinkedPair<K,V> current = pairs[hashCode];
+            LinkedPair<K,V> previous = null;
             while(current != null){
                 if (current.key.equals(key)){
                     if (replace){
@@ -77,7 +76,7 @@ public class MyHashMap<K, V> {
         if (key == null || pairs == null)
             return null;
         int expectedHashCode = getHashCode(key);
-        Pair<K,V> current;
+        LinkedPair<K,V> current;
         if (pairs[expectedHashCode] != null){
             current = pairs[expectedHashCode];
             while(current != null){
@@ -110,8 +109,8 @@ public class MyHashMap<K, V> {
     
     public K[] keys(K[] array){
         int index = 0;
-        Pair current;
-        for(Pair p : pairs){
+        LinkedPair current;
+        for(LinkedPair p : pairs){
             current = p;
             while (current != null){
                 array[index] = (K)current.key;
@@ -128,7 +127,7 @@ public class MyHashMap<K, V> {
     
     public void clear(){
         size = 0;
-        Pair current, next;
+        LinkedPair current, next;
         for(int i = 0; i < pairs.length; ++i){
             current = pairs[i];
             while (current != null){
@@ -147,12 +146,12 @@ public class MyHashMap<K, V> {
         return Math.abs(key.hashCode()) % hashCapacity;
     }
     
-    private class Pair<K,V>{
+    private class LinkedPair<K,V>{
         public final K key;
         public V value;
-        public Pair<K,V> next = null;
+        public LinkedPair<K,V> next = null;
         
-        public Pair(K key, V value){
+        public LinkedPair(K key, V value){
             this.key = key;
             this.value = value;
         }

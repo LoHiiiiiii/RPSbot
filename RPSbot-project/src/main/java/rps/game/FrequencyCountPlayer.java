@@ -17,7 +17,6 @@ public class FrequencyCountPlayer implements RPSPlayer {
     private final MyHashMap<Move, Integer> frequencies;
     
     /**
-     *
      * @param random Randomnumber generator to be used in case of ties.
      */
     public FrequencyCountPlayer(Random random){
@@ -28,6 +27,9 @@ public class FrequencyCountPlayer implements RPSPlayer {
         frequencies.put(Move.SCISSORS, 0);
     }
     
+    /**
+     * @return the move that beats the opponent's most frequently used move.
+     */
     @Override
     public Move getMove() {
         int hiscore = Integer.MIN_VALUE;

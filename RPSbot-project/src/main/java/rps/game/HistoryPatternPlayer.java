@@ -17,12 +17,19 @@ public class HistoryPatternPlayer implements RPSPlayer {
     private final Boolean recordMyMove;
     private String history;
     
-    
+    /**
+     * @param defaultMove move used if no pattern is found
+     * @param recordMyMove whether to consider only opponent's move or what both players used.
+     */
     public HistoryPatternPlayer(Move defaultMove, Boolean recordMyMove){
         this.defaultMove = defaultMove;
         this.recordMyMove = recordMyMove;
     }
     
+    /**
+     * Finds the move the opponent used next if it would be part of the longest pattern they have played.
+     * @return the move found in the pattern or the defaultMove if no pattern found
+     */
     @Override
     public Move getMove() {
         Move m = stringToMove(getPredictedMove(history));
@@ -57,6 +64,11 @@ public class HistoryPatternPlayer implements RPSPlayer {
         return null;
     }
     
+    /**
+     * Finds the longest nonrepeating substring that includes the final char of the string and returns the char that comes after that. 
+     * If recordMyMove is true, considers sets of 2 chars.
+     * @return the move found in the pattern or the defaultMove if no pattern found
+     */
     private String getPredictedMove(String string){
         if (string == null || string.length() == 0)
             return "";

@@ -15,7 +15,9 @@ public class MyList<T> {
         elements[size] = element;
         size++;
     }
-    
+    /**
+     * Doubles the capacity of the list.
+     */
     private void increaseCapacity() {
         elements = Arrays.copyOf(elements, elements.length * 2);
     }
